@@ -6,19 +6,25 @@ on:
       - main
 
 jobs:
-  coverage:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+  test:
+     runs-on: ubuntu-latest
 
-      - name: Run tests and collect coverage
-        run: |
-          npm install
-          npm test -- --coverage
+     steps:
+       - name: Checkout code
+         uses: actions/checkout@v3
 
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v5
-        with:
+       - name: Set up Node.js
+         uses: actions/setup-node@v4
+         with:
+          node-version: '18'
+
+       - name: Install dependencies
+         run: npm install
+
+       - name: Run tests and collect coverage
+         run: npm test
+
+       - name: Upload coverage to Codecov
+         uses: codecov/codecov-action@v4
+         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-
