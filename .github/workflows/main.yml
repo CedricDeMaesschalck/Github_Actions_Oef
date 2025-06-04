@@ -1,5 +1,24 @@
-- name: Upload coverage reports to Codecov
-    uses:codecov/codecov-action@v5
-    with:
-      token: ${{ secrets.CODECOV_TOKEN }}
-          
+name: Code Coverage
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Run tests and collect coverage
+        run: |
+          npm install
+          npm test -- --coverage
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+
